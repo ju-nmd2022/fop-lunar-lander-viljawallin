@@ -91,6 +91,28 @@ function bob(x, y, s) {
   pop();
 }
 
+/* Mushroom */
+function mushroom(x, y, s) {
+  push();
+  noStroke();
+  fill(255, 10, 10);
+  rect(x + 280 * s, y + 358 * s, 160 * s, 40 * s, 30 * s, 30 * s, 0 * s);
+  ellipse(x + 295 * s, y + 375 * s, 10 * s);
+  pop();
+  push();
+  noStroke();
+  fill(255, 255, 255);
+  ellipse(x + 295 * s, y + 375 * s, 20 * s, 18 * s);
+  ellipse(x + 320 * s, y + 368 * s, 15 * s, 15 * s);
+  ellipse(x + 340 * s, y + 382 * s, 16 * s, 13 * s);
+  ellipse(x + 355 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 375 * s, y + 365 * s, 15 * s, 12 * s);
+  ellipse(x + 392 * s, y + 380 * s, 18 * s, 15 * s);
+  ellipse(x + 409 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 428 * s, y + 377 * s, 15 * s, 18 * s);
+  pop();
+}
+
 /*Talking bubble*/
 //Resource used to make this bubble= "Foundations of Programming - Emoji with a speechbubble", by Garrit.//
 function button(x, y, s) {
@@ -127,8 +149,18 @@ function startScreen() {
 }
 
 function gameScreen() {
-  background(255, 235, 230);
-  text("game on", 200, 100);
+  push();
+  background(255, 255, 230);
+  textSize(35);
+  fill(255, 10, 10);
+  textFont("Comic Sans MS");
+  text("GAME ON", 260, 60);
+  noStroke();
+  fill(200, 180, 230);
+  rect(x - 100, y + 390, s * 10000);
+  pop();
+  bob(x, y + 20, s * 0.55);
+  mushroom(x, y + 8, s * 1.2);
 }
 function resultScreen() {
   background(225, 225, 255);
