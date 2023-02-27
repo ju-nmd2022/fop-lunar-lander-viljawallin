@@ -1,82 +1,71 @@
 let x = 100;
 let y = 100;
-let s = 0.8;
-let speed = 0;
+let s = 0.5;
 let rotation = 0;
-let mushroomX = 200;
-let mushroomY = 110;
-let bobX = 2;
-let bobY = 2;
+let state = "start";
+let gameTimer = 0;
+let buttonIsClicked = false;
+
+let bobY = 100;
 let velocity = 1;
-let acceleration = 0.3;
+let acceleration = 0.2;
+let isGameActive = true;
+acceleration = 0.1;
 
-function bobmoves() {
-  push();
-  x = x + Math.cos(rotation) * speed;
-  y = y + Math.sin(rotation) * speed;
-
-  if (keyIsDown(37)) {
-    speed = -2;
-  } else if (keyIsDown(39)) {
-    speed = 2;
-  } else {
-    speed = 0;
-  }
-  if (keyIsDown(38)) {
-    y = y - speed - 1;
-  } else if (keyIsDown(40)) {
-    y = y + speed + 1;
-  }
-  pop();
+function setup() {
+  createCanvas(700, 600);
+  background(255, 255, 255);
 }
 
-function scenery() {
+/*Talking bubble*/
+// Reference used to make this bubble= "Foundations of Programming - Emoji with a speechbubble", by Garrit. //
+function button(x, y, s) {
   push();
-  background(255, 255, 230);
-  textSize(35);
-  fill(255, 10, 10);
-  textFont("Comic Sans MS");
-  text("GAME ON", 260, 60);
-  noStroke();
-
-  fill(200, 180, 230);
-  rect(0, 490, s * 10000);
-
-  mushroom(x + 100, y + 8, s * 1.2);
-  pop();
-}
-
-/* Mushroom */
-function mushroom(x, y, s) {
-  push();
-  noStroke();
-  fill(255, 10, 10);
-  rect(
-    mushroomX + 280 * s,
-    mushroomY + 358 * s,
-    160 * s,
-    40 * s,
-    30 * s,
-    30 * s,
-    0 * s
+  beginShape();
+  vertex(x + 150 * s, y - 20 * s);
+  vertex(x + 50 * s, y - 20 * s);
+  bezierVertex(x, y - 20 * s, x, y - 80 * s, x + 50 * s, y - 80 * s);
+  vertex(x + 240 * s, y - 80 * s);
+  bezierVertex(
+    x + 290 * s,
+    y - 80 * s,
+    x + 290 * s,
+    y - 20 * s,
+    x + 240 * s,
+    y - 20 * s
   );
-  ellipse(mushroomX + 295 * s, mushroomY + 375 * s, 10 * s);
-  pop();
-  push();
-  noStroke();
-  fill(255, 255, 255);
-  ellipse(mushroomX + 295 * s, mushroomY + 375 * s, 20 * s, 18 * s);
-  ellipse(mushroomX + 320 * s, mushroomY + 368 * s, 15 * s, 15 * s);
-  ellipse(mushroomX + 340 * s, mushroomY + 382 * s, 16 * s, 13 * s);
-  ellipse(mushroomX + 355 * s, mushroomY + 370 * s, 10 * s, 10 * s);
-  ellipse(mushroomX + 375 * s, mushroomY + 365 * s, 15 * s, 12 * s);
-  ellipse(mushroomX + 392 * s, mushroomY + 380 * s, 18 * s, 15 * s);
-  ellipse(mushroomX + 409 * s, mushroomY + 370 * s, 10 * s, 10 * s);
-  ellipse(mushroomX + 428 * s, mushroomY + 377 * s, 15 * s, 18 * s);
+  vertex(x + 180 * s, y - 20 * s);
+  vertex(x + 140 * s, y + 20 * s);
+  endShape(CLOSE);
+  text("START GAME", x + 80 * s, y - 45 * s);
   pop();
 }
 
-/* Bob the best */
+function buttonAgain(x, y, s) {
+  push();
+  beginShape();
+  vertex(x + 150 * s, y - 20 * s);
+  vertex(x + 50 * s, y - 20 * s);
+  bezierVertex(x, y - 20 * s, x, y - 80 * s, x + 50 * s, y - 80 * s);
+  vertex(x + 240 * s, y - 80 * s);
+  bezierVertex(
+    x + 290 * s,
+    y - 80 * s,
+    x + 290 * s,
+    y - 20 * s,
+    x + 240 * s,
+    y - 20 * s
+  );
+  vertex(x + 180 * s, y - 20 * s);
+  vertex(x + 140 * s, y + 20 * s);
+  endShape(CLOSE);
+  textFont("Arial");
+  textSize(15);
+  fill(0, 0, 0);
+  text("PLAY AGAIN", x + 60 * s, y - 45 * s);
+  pop();
+}
+
 function bob(x, y, s) {
   push();
   noStroke();
@@ -164,52 +153,143 @@ function bob(x, y, s) {
   pop();
 }
 
-/*Talking bubble*/
-// Reference used to make this bubble= "Foundations of Programming - Emoji with a speechbubble", by Garrit. //
-function button(x, y, s) {
-  push();
-  beginShape();
-  vertex(x + 150 * s, y - 20 * s);
-  vertex(x + 50 * s, y - 20 * s);
-  bezierVertex(x, y - 20 * s, x, y - 80 * s, x + 50 * s, y - 80 * s);
-  vertex(x + 240 * s, y - 80 * s);
-  bezierVertex(
-    x + 290 * s,
-    y - 80 * s,
-    x + 290 * s,
-    y - 20 * s,
-    x + 240 * s,
-    y - 20 * s
-  );
-  vertex(x + 180 * s, y - 20 * s);
-  vertex(x + 140 * s, y + 20 * s);
-  endShape(CLOSE);
-  text("START GAME", x + 100 * s, y - 45 * s);
-  pop();
-}
-
-function startScreen() {
-  background(235, 255, 230);
+function scenery() {
   push();
   noStroke();
+  fill(255, 255, 230);
+  rect(0, 0, width, height);
+
   fill(200, 180, 230);
-  rect(x - 100, y + 390, s * 10000);
+  rect(0, 475, 700);
   pop();
-  bob(x + 140 * s, y, s * 1.2);
-  button(x + 135, y + 25, s * 1.15);
 }
 
-function gameScreen() {
-  bobmoves();
-  scenery();
-  bob(bobX, bobY);
-  bob(x - 40, y - 45, s * 0.55);
-  x = x + 1;
-  y = y + 1;
-  bobY = bobY + 1;
-  bobX = bobY + velocity;
-  velocity = velocity + acceleration;
+/* Mushroom */
+function mushroom(x, y, s) {
+  push();
+  noStroke();
+  fill(255, 10, 10);
+  rect(x + 280 * s, y + 358 * s, 160 * s, 40 * s, 30 * s, 30 * s, 0 * s);
+  ellipse(x + 295 * s, y + 375 * s, 10 * s);
+  pop();
+  push();
+  noStroke();
+  fill(255, 255, 255);
+  ellipse(x + 295 * s, y + 375 * s, 20 * s, 18 * s);
+  ellipse(x + 320 * s, y + 368 * s, 15 * s, 15 * s);
+  ellipse(x + 340 * s, y + 382 * s, 16 * s, 13 * s);
+  ellipse(x + 355 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 375 * s, y + 365 * s, 15 * s, 12 * s);
+  ellipse(x + 392 * s, y + 380 * s, 18 * s, 15 * s);
+  ellipse(x + 409 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 428 * s, y + 377 * s, 15 * s, 18 * s);
+  pop();
 }
+
+function mushroomBlue(x, y, s) {
+  push();
+  noStroke();
+  fill(130, 150, 250);
+  rect(x + 280 * s, y + 358 * s, 160 * s, 40 * s, 30 * s, 30 * s, 0 * s);
+  ellipse(x + 295 * s, y + 375 * s, 10 * s);
+  pop();
+  push();
+  noStroke();
+  fill(255, 255, 255);
+  ellipse(x + 295 * s, y + 375 * s, 20 * s, 18 * s);
+  ellipse(x + 320 * s, y + 368 * s, 15 * s, 15 * s);
+  ellipse(x + 340 * s, y + 382 * s, 16 * s, 13 * s);
+  ellipse(x + 355 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 375 * s, y + 365 * s, 15 * s, 12 * s);
+  ellipse(x + 392 * s, y + 380 * s, 18 * s, 15 * s);
+  ellipse(x + 409 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 428 * s, y + 377 * s, 15 * s, 18 * s);
+  pop();
+  push();
+  noStroke();
+  fill(180, 230, 180);
+  rect(x + 350 * s, y + 398 * s, 20 * s, 163 * s);
+  pop();
+}
+
+function mushroomPink(x, y, s) {
+  push();
+  noStroke();
+  fill(250, 150, 250);
+  rect(x + 280 * s, y + 358 * s, 160 * s, 40 * s, 30 * s, 30 * s, 0 * s);
+  ellipse(x + 295 * s, y + 375 * s, 10 * s);
+  pop();
+  push();
+  noStroke();
+  fill(255, 255, 255);
+  ellipse(x + 295 * s, y + 375 * s, 20 * s, 18 * s);
+  ellipse(x + 320 * s, y + 368 * s, 15 * s, 15 * s);
+  ellipse(x + 340 * s, y + 382 * s, 16 * s, 13 * s);
+  ellipse(x + 355 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 375 * s, y + 365 * s, 15 * s, 12 * s);
+  ellipse(x + 392 * s, y + 380 * s, 18 * s, 15 * s);
+  ellipse(x + 409 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 428 * s, y + 377 * s, 15 * s, 18 * s);
+  pop();
+  push();
+  noStroke();
+  fill(180, 230, 180);
+  rect(x + 350 * s, y + 398 * s, 20 * s, 100 * s);
+  pop();
+}
+
+function mushroomYellow(x, y, s) {
+  push();
+  noStroke();
+  fill(255, 230, 100);
+  rect(x + 280 * s, y + 358 * s, 160 * s, 40 * s, 30 * s, 30 * s, 0 * s);
+  ellipse(x + 295 * s, y + 375 * s, 10 * s);
+  pop();
+  push();
+  noStroke();
+  fill(255, 255, 255);
+  ellipse(x + 295 * s, y + 375 * s, 20 * s, 18 * s);
+  ellipse(x + 320 * s, y + 368 * s, 15 * s, 15 * s);
+  ellipse(x + 340 * s, y + 382 * s, 16 * s, 13 * s);
+  ellipse(x + 355 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 375 * s, y + 365 * s, 15 * s, 12 * s);
+  ellipse(x + 392 * s, y + 380 * s, 18 * s, 15 * s);
+  ellipse(x + 409 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 428 * s, y + 377 * s, 15 * s, 18 * s);
+  pop();
+  push();
+  noStroke();
+  fill(180, 230, 180);
+  rect(x + 350 * s, y + 398 * s, 20 * s, 163 * s);
+  pop();
+}
+
+function mushroomPurple(x, y, s) {
+  push();
+  noStroke();
+  fill(225, 80, 250);
+  rect(x + 280 * s, y + 358 * s, 160 * s, 40 * s, 30 * s, 30 * s, 0 * s);
+  ellipse(x + 295 * s, y + 375 * s, 10 * s);
+  pop();
+  push();
+  noStroke();
+  fill(255, 255, 255);
+  ellipse(x + 295 * s, y + 375 * s, 20 * s, 18 * s);
+  ellipse(x + 320 * s, y + 368 * s, 15 * s, 15 * s);
+  ellipse(x + 340 * s, y + 382 * s, 16 * s, 13 * s);
+  ellipse(x + 355 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 375 * s, y + 365 * s, 15 * s, 12 * s);
+  ellipse(x + 392 * s, y + 380 * s, 18 * s, 15 * s);
+  ellipse(x + 409 * s, y + 370 * s, 10 * s, 10 * s);
+  ellipse(x + 428 * s, y + 377 * s, 15 * s, 18 * s);
+  pop();
+  push();
+  noStroke();
+  fill(180, 230, 180);
+  rect(x + 350 * s, y + 398 * s, 20 * s, 163 * s);
+  pop();
+}
+
 function overScreen() {
   push();
   background(255, 100, 100);
@@ -230,7 +310,11 @@ function overScreen() {
   rect(0, 490, s * 10000);
   pop();
 
-  bob(x + 182, y + 50, s * 1.3);
+  bob(x + 122, y + 50, s * 1.7);
+  push();
+  fill(255, 255, 255);
+  buttonAgain(x + 200, y + 90, s);
+  pop();
 }
 
 function finishedScreen() {
@@ -253,39 +337,81 @@ function finishedScreen() {
   rect(0, 490, s * 10000);
   pop();
 
-  bob(142, 70, s * 1.3);
+  bob(x + 122, y + 50, s * 1.7);
+  push();
+  fill(255, 255, 255);
+  buttonAgain(x + 200, y + 90, s);
+  pop();
 }
 
-let state = "start";
-let gameTimer = 0;
-let buttonIsClicked = false;
+function startScreen() {
+  scenery();
+  push();
+  noStroke();
+  fill(200, 180, 230);
+  rect(x - 100, y + 390, s * 10000);
+  pop();
+  bob(210, y, s * 1.4);
+  button(x + 135, y + 25, s * 1.15);
 
-function draw() {
-  if (state === "start") {
-    startScreen();
-  } else if (state === "game") {
-    gameScreen();
-    gameTimer = gameTimer + 1;
-    if (gameTimer >= 100) {
-      gameTimer = 0;
-      state = "result";
+  //mouseClicked();
+}
+
+function gameScreen() {
+  scenery();
+  mushroom(-15, 117, s * 1.8);
+  mushroomBlue(300, 110, s * 1.3);
+  mushroomPink(280, 226, s);
+  mushroomPurple(-200, 26, s * 1.6);
+  mushroomYellow(-30, 167, s * 1.1);
+  bob(280, bobY, s);
+
+  if (isGameActive) {
+    bobY = bobY + velocity;
+    velocity = velocity + acceleration;
+
+    if (mouseIsPressed) {
+      velocity = velocity - 0.3;
     }
-  } else if (state === "result") {
-    overScreen();
+
+    if (bobY > 332) {
+      isGameActive = false;
+      if (velocity > 2) state = "over";
+      else state = "finished";
+    }
   }
 }
 
 function mouseClicked() {
   if (state === "start") {
     if (
-      mouseX > x + 145 &&
-      mouseX < x + 145 + 245 &&
-      mouseY > y - 50 &&
-      mouseY < y + 10 + 5
+      mouseX > x + 142 &&
+      mouseX < x + 145 + 152 &&
+      mouseY > y - 26 &&
+      mouseY < y + 12 + 5
     ) {
       state = "game";
+      //gameScreen();
     }
-  } else if (state === "result") {
-    state = "game";
+  } else if (state === "over" || state === "finished") {
+    if (
+      mouseX > x + 206 &&
+      mouseX < x + 206 + 132 &&
+      mouseY > y + 55 &&
+      mouseY < y + 55 + 23
+    ) {
+      bobY = 100;
+      velocity = 1;
+      isGameActive = true;
+      state = "game";
+      //gameScreen();
+    }
   }
+}
+
+function draw() {
+  if (state === "start") startScreen();
+  else if (state === "game") gameScreen();
+  else if (state === "over") overScreen();
+  else if (state === "finished") finishedScreen();
 }
