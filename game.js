@@ -1,10 +1,83 @@
 let x = 100;
 let y = 100;
 let s = 0.8;
+let speed = 0;
+let rotation = 0;
+let mushroomX = 200;
+let mushroomY = 110;
+let bobX = 2;
+let bobY = 2;
+let velocity = 1;
+let acceleration = 0.3;
+
+function bobmoves() {
+  push();
+  x = x + Math.cos(rotation) * speed;
+  y = y + Math.sin(rotation) * speed;
+
+  if (keyIsDown(37)) {
+    speed = -2;
+  } else if (keyIsDown(39)) {
+    speed = 2;
+  } else {
+    speed = 0;
+  }
+  if (keyIsDown(38)) {
+    y = y - speed - 1;
+  } else if (keyIsDown(40)) {
+    y = y + speed + 1;
+  }
+  pop();
+}
+
+function scenery() {
+  push();
+  background(255, 255, 230);
+  textSize(35);
+  fill(255, 10, 10);
+  textFont("Comic Sans MS");
+  text("GAME ON", 260, 60);
+  noStroke();
+
+  fill(200, 180, 230);
+  rect(0, 490, s * 10000);
+
+  mushroom(x + 100, y + 8, s * 1.2);
+  pop();
+}
+
+/* Mushroom */
+function mushroom(x, y, s) {
+  push();
+  noStroke();
+  fill(255, 10, 10);
+  rect(
+    mushroomX + 280 * s,
+    mushroomY + 358 * s,
+    160 * s,
+    40 * s,
+    30 * s,
+    30 * s,
+    0 * s
+  );
+  ellipse(mushroomX + 295 * s, mushroomY + 375 * s, 10 * s);
+  pop();
+  push();
+  noStroke();
+  fill(255, 255, 255);
+  ellipse(mushroomX + 295 * s, mushroomY + 375 * s, 20 * s, 18 * s);
+  ellipse(mushroomX + 320 * s, mushroomY + 368 * s, 15 * s, 15 * s);
+  ellipse(mushroomX + 340 * s, mushroomY + 382 * s, 16 * s, 13 * s);
+  ellipse(mushroomX + 355 * s, mushroomY + 370 * s, 10 * s, 10 * s);
+  ellipse(mushroomX + 375 * s, mushroomY + 365 * s, 15 * s, 12 * s);
+  ellipse(mushroomX + 392 * s, mushroomY + 380 * s, 18 * s, 15 * s);
+  ellipse(mushroomX + 409 * s, mushroomY + 370 * s, 10 * s, 10 * s);
+  ellipse(mushroomX + 428 * s, mushroomY + 377 * s, 15 * s, 18 * s);
+  pop();
+}
 
 /* Bob the best */
 function bob(x, y, s) {
-  /* Body */
   push();
   noStroke();
   fill(255, 215, 255);
@@ -91,30 +164,8 @@ function bob(x, y, s) {
   pop();
 }
 
-/* Mushroom */
-function mushroom(x, y, s) {
-  push();
-  noStroke();
-  fill(255, 10, 10);
-  rect(x + 280 * s, y + 358 * s, 160 * s, 40 * s, 30 * s, 30 * s, 0 * s);
-  ellipse(x + 295 * s, y + 375 * s, 10 * s);
-  pop();
-  push();
-  noStroke();
-  fill(255, 255, 255);
-  ellipse(x + 295 * s, y + 375 * s, 20 * s, 18 * s);
-  ellipse(x + 320 * s, y + 368 * s, 15 * s, 15 * s);
-  ellipse(x + 340 * s, y + 382 * s, 16 * s, 13 * s);
-  ellipse(x + 355 * s, y + 370 * s, 10 * s, 10 * s);
-  ellipse(x + 375 * s, y + 365 * s, 15 * s, 12 * s);
-  ellipse(x + 392 * s, y + 380 * s, 18 * s, 15 * s);
-  ellipse(x + 409 * s, y + 370 * s, 10 * s, 10 * s);
-  ellipse(x + 428 * s, y + 377 * s, 15 * s, 18 * s);
-  pop();
-}
-
 /*Talking bubble*/
-//Resource used to make this bubble= "Foundations of Programming - Emoji with a speechbubble", by Garrit.//
+// Reference used to make this bubble= "Foundations of Programming - Emoji with a speechbubble", by Garrit. //
 function button(x, y, s) {
   push();
   beginShape();
@@ -142,29 +193,67 @@ function startScreen() {
   push();
   noStroke();
   fill(200, 180, 230);
-  rect(x - 100, y + 360, s * 10000);
+  rect(x - 100, y + 390, s * 10000);
   pop();
   bob(x + 140 * s, y, s * 1.2);
   button(x + 135, y + 25, s * 1.15);
 }
 
 function gameScreen() {
+  bobmoves();
+  scenery();
+  bob(bobX, bobY);
+  bob(x - 40, y - 45, s * 0.55);
+  x = x + 1;
+  y = y + 1;
+  bobY = bobY + 1;
+  bobX = bobY + velocity;
+  velocity = velocity + acceleration;
+}
+function overScreen() {
   push();
-  background(255, 255, 230);
+  background(255, 100, 100);
+  textSize(40);
+  fill(255, 0, 0);
+  textFont("Comic Sans MS");
+  text("GAME OVER!", 220, 80);
+  pop();
+  push();
+  textSize(25);
+  textFont("Comic Sans MS");
+  fill(0, 0, 0);
+  text("NEXT TIME BOB...", 235, 120);
+
+  push();
+  noStroke();
+  fill(200, 180, 230);
+  rect(0, 490, s * 10000);
+  pop();
+
+  bob(x + 182, y + 50, s * 1.3);
+}
+
+function finishedScreen() {
+  push();
+  background(210, 255, 210);
   textSize(35);
   fill(255, 10, 10);
   textFont("Comic Sans MS");
-  text("GAME ON", 260, 60);
+  text("YOU MADE IT!", 220, 60);
+  pop();
+  push();
+  textSize(40);
+  textFont("Comic Sans MS");
+  fill(245, 200, 200);
+  text("GOOD JOB BOB", 190, 100);
+
+  push();
   noStroke();
   fill(200, 180, 230);
-  rect(x - 100, y + 390, s * 10000);
+  rect(0, 490, s * 10000);
   pop();
-  bob(x, y + 20, s * 0.55);
-  mushroom(x, y + 8, s * 1.2);
-}
-function resultScreen() {
-  background(225, 225, 255);
-  text("result", 200, 100);
+
+  bob(142, 70, s * 1.3);
 }
 
 let state = "start";
@@ -182,7 +271,7 @@ function draw() {
       state = "result";
     }
   } else if (state === "result") {
-    resultScreen();
+    overScreen();
   }
 }
 
