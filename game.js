@@ -3,7 +3,6 @@ let y = 100;
 let s = 0.5;
 let rotation = 0;
 let state = "start";
-let gameTimer = 0;
 let buttonIsClicked = false;
 
 let bobY = 100;
@@ -404,7 +403,6 @@ function mouseClicked() {
       velocity = 1;
       isGameActive = true;
       state = "game";
-      //gameScreen();
     }
   }
 }
