@@ -40,6 +40,7 @@ function button(x, y, s) {
   pop();
 }
 
+/*Talking bubble for the over and finished game*/
 function buttonAgain(x, y, s) {
   push();
   beginShape();
@@ -65,6 +66,7 @@ function buttonAgain(x, y, s) {
   pop();
 }
 
+/*The maincharacter*/
 function bob(x, y, s) {
   push();
   noStroke();
@@ -352,8 +354,6 @@ function startScreen() {
   pop();
   bob(210, y, s * 1.4);
   button(x + 135, y + 25, s * 1.15);
-
-  //mouseClicked();
 }
 
 function gameScreen() {
@@ -390,7 +390,6 @@ function mouseClicked() {
       mouseY < y + 12 + 5
     ) {
       state = "game";
-      //gameScreen();
     }
   } else if (state === "over" || state === "finished") {
     if (
