@@ -354,6 +354,9 @@ function startScreen() {
   pop();
   bob(210, y, s * 1.4);
   button(x + 135, y + 25, s * 1.15);
+  mushroomBlue(153, 26, s * 1.6);
+  mushroomPink(210, 77, s * 1.6);
+  mushroomYellow(150, 139, s * 1.2);
 }
 
 function gameScreen() {
@@ -369,7 +372,7 @@ function gameScreen() {
     bobY = bobY + velocity;
     velocity = velocity + acceleration;
 
-    if (mouseIsPressed) {
+    if (keyIsDown(32)) {
       velocity = velocity - 0.3;
     }
 
