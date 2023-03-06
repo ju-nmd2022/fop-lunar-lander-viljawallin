@@ -16,6 +16,25 @@ function setup() {
   background(255, 255, 255);
 }
 
+function fire(x, y, s) {
+  push();
+  noStroke();
+  fill(255, 215, 255);
+  ellipse(x + 100 * s, y + 100 * s, 45 * s);
+  ellipse(x + 60 * s, y + 80 * s, 35 * s);
+  ellipse(x + 140 * s, y + 85 * s, 30 * s);
+  ellipse(x + 118 * s, y + 65 * s, 25 * s);
+  pop();
+  push();
+  noStroke();
+  fill(180, 214, 255);
+  ellipse(x + 100 * s, y + 100 * s, 20 * s, 30 * s);
+  ellipse(x + 60 * s, y + 80 * s, 20 * s, 25 * s);
+  ellipse(x + 140 * s, y + 85 * s, 15 * s, 25 * s);
+  ellipse(x + 120 * s, y + 68 * s, 10 * s, 15 * s);
+  pop();
+}
+
 /*Talking bubble*/
 // Reference used to make this bubble= "Foundations of Programming - Emoji with a speechbubble", by Garrit. //
 function button(x, y, s) {
@@ -374,6 +393,7 @@ function gameScreen() {
 
     if (keyIsDown(32)) {
       velocity = velocity - 0.3;
+      fire(x + 138, bobY + 60, s * 1.4);
     }
 
     if (bobY > 332) {
